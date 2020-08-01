@@ -1,0 +1,124 @@
+<template>
+  <view>
+    <view class="controls">
+      <button @tap="add">新增可用券(100)</button>
+      <button @tap="deleteAll">删除可用券(all)</button>
+      <button @tap="addLot">新增可用券(1000)</button>
+      <button @tap="update">更新可用券(1)</button>
+      <button @tap="updateAll">更新可用券(all)</button>
+      <button @tap="deleteOne">删除可用券(1)</button>
+      <button @tap="add2Lot">新增不可用券(1000)</button>
+      <button @tap="add2Lot2">新增不可用券(5000)</button>
+      <button @tap="toggleList">切换到{{show2?'可用券':'不可用券'}}</button>
+      <button @tap="reLaunch">刷新页面</button>
+      <button @tap="reLaunch2">进入静态测试</button>
+    </view>
+    <view v-if="!show2" class="couponList">
+      <view class="title">可用券列表({{listData.length}})</view>
+      <coupon v-for="item in listData" :key="item.id" :info="item"></coupon>
+    </view>
+    <view v-else class="couponList">
+      <view class="title">不可用券列表({{listData2.length}})</view>
+      <coupon v-for="item in listData2" :key="item.id" :info="item"></coupon>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from '@wepy/core'
+  import { buildData } from '../utils/data'
+  import { getTimeWithModal,setReadyStart,getReadyTimeWithModal } from '../utils/proxy'
+
+  wepy.page({
+    data: {
+      listData: [],
+      listData2: [],
+      show2: false
+    },
+    onReady () {
+      getReadyTimeWithModal()
+    },
+    methods: {
+      reLaunch () {
+        setReadyStart()
+        wx.reLaunch({
+          url: '/pages/index'
+        })
+      },
+      reLaunch2 () {
+        setReadyStart()
+        wx.reLaunch({
+          url: '/pages/static'
+        })
+      },
+      toggleList () {
+        getTimeWithModal(this.$wx)
+        this.show2 = !this.show2
+      },
+      add2Lot () {
+        getTimeWithModal(this.$wx)
+        this.listData2 = this.listData2.concat(buildData(1000, true))
+      },
+      add2Lot2 () {
+        getTimeWithModal(this.$wx)
+        this.listData2 = this.listData2.concat(buildData(5000, true))
+      },
+      add () {
+        getTimeWithModal(this.$wx)
+        this.listData = this.listData.concat(buildData(100))
+      },
+      addLot () {
+        getTimeWithModal(this.$wx)
+        this.listData = this.listData.concat(buildData(1000))
+      },
+      deleteOne () {
+        getTimeWithModal(this.$wx)
+        this.listData.shift()
+      },
+      deleteAll () {
+        getTimeWithModal(this.$wx)
+        this.listData = []
+      },
+      update () {
+        getTimeWithModal(this.$wx)
+        const listData = this.listData
+        if (listData[0]) {
+          listData[0].amount++
+        }
+      },
+      updateAll () {
+        getTimeWithModal(this.$wx)
+        this.listData.forEach((item) => {
+          item.amount++
+        })
+      }
+    }
+  })
+</script>
+<config>
+  {
+  usingComponents: {
+  coupon: '../components/coupon'
+  }
+  }
+</config>
+
+<style>
+  .couponList {
+    padding: 0 12px;
+  }
+
+  .couponList .title {
+    font-size: 16px;
+    margin-top: 12px;
+  }
+
+  .controls {
+    padding: 4px 12px 0 12px;
+  }
+
+  .controls button {
+    margin-top: 8px;
+    font-size: 16px;
+  }
+</style>

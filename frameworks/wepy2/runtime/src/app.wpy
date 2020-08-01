@@ -1,0 +1,30 @@
+<script>
+  import wepy from '@wepy/core'
+  import { proxySetData,setReadyStart } from './utils/proxy'
+
+  proxySetData({
+    console: true
+  })
+
+  setReadyStart()
+
+  wepy.app({
+    onLaunch () {
+    }
+  })
+</script>
+
+<config>
+  {
+  pages: [
+  'pages/index',
+  'pages/static'
+  ],
+  window: {
+  backgroundTextStyle: 'light',
+  navigationBarBackgroundColor: '#fff',
+  navigationBarTitleText: 'wepy2-runtime-benchmark',
+  navigationBarTextStyle: 'black'
+  }
+  }
+</config>

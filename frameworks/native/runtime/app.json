@@ -1,0 +1,10 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/static/static"
+  ],
+  "window": {
+    "navigationBarTitleText": "native-runtime-benchmark"
+  },
+  "sitemapLocation": "sitemap.json"
+}
